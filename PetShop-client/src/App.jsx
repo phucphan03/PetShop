@@ -1,14 +1,17 @@
 import './App.css'
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from './pages/Home'
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 function App() {
-
-
   return (
-    <div className="container mt-5">
-      <h1 className="text-red">Hello PetShop 🐶</h1>
-      <button className="btn btn-success">Click me</button>
-      <h1 className="text-xl-end">fsdf</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
