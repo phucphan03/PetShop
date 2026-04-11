@@ -1,0 +1,12 @@
+﻿using Domain.Entities.Applications;
+using Microsoft.EntityFrameworkCore;
+
+namespace Infrastructure.Data
+{
+    public class ApplicationDbContext : DbContext
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options) { }
+        public DbSet<Product> Products { get; set; }
+    }
+}
