@@ -9,5 +9,7 @@ namespace Application.Interfaces
         Task<AuthResponse?> RefreshTokenAsync(string refreshToken);
         Task<bool> LogoutAsync(string refreshToken);
         Task<(bool Success, string[] Errors)> RegisterAsync(RegisterDto dto);
+        Task VerifyOtpAsync(VerifyOtpDto dto);
+        Task ResendOtpAsync(ResendOtpDto dto);
     }
 }

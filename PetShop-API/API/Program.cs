@@ -4,11 +4,15 @@ using Application.Interfaces;
 using Application.Services;
 using Domain.Entities.Authorizes;
 using Infrastructure.Data;
+using Infrastructure.Interfaces;
+using Infrastructure.Repositories;
 using Infrastructure.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Email;
+using Shared.Email.Interface;
 
 namespace API
 {
@@ -56,6 +60,9 @@ namespace API
             builder.Services.AddScoped<IFacadeService, FacadeService>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IAuthorizeService, AuthorizeService>();
+            builder.Services.AddSingleton<IEmailQueue, EmailQueue>();
+            builder.Services.AddSingleton<EmailSender>();
+            builder.Services.AddHostedService<BackgroundEmailSender>();
             builder
                 .Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<AuthorizeDbContext>()
@@ -65,14 +72,17 @@ namespace API
             builder.Services.AddSwaggerGen();
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowFrontend",
+                options.AddPolicy(
+                    "AllowFrontend",
                     policy =>
                     {
-                        policy.WithOrigins("http://localhost:5174")
-                              .AllowAnyHeader()
-                              .AllowAnyMethod()
-                              .AllowCredentials();
-                    });
+                        policy
+                            .WithOrigins("http://localhost:5173", "http://localhost:5174", "http://localhost:5175")
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials();
+                    }
+                );
             });
             var app = builder.Build();
 

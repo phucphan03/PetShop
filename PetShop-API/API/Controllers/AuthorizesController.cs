@@ -79,6 +79,19 @@ namespace API.Controllers
 
             return Ok(new { message = "Đăng ký thành công" });
         }
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOtp(VerifyOtpDto dto)
+        {
+            await _facadeService.AuthorizeService.VerifyOtpAsync(dto);
+            return Ok(new { message = "Xác thực OTP thành công" });
+        }
+
+        [HttpPost("resend-otp")]
+        public async Task<IActionResult> ResendOtp(ResendOtpDto dto)
+        {
+            await _facadeService.AuthorizeService.ResendOtpAsync(dto);
+            return Ok(new { message = "OTP_SENT" });
+        }
 
         private void SetRefreshTokenCookie(string refreshToken)
         {

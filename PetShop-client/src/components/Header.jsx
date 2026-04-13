@@ -1,11 +1,15 @@
-import { getToken } from "../utils/auth";
+import { getToken, removeToken } from "../utils/token";
 import { authService } from "../services/authService";
+import { useNavigate } from "react-router-dom";
+
 export default function Header() {
     const token = getToken();
+    const navigate = useNavigate();
 
     const handleLogout = async () => {
         await authService.logout();
-        window.location.href = "/";
+        removeToken();
+        navigate("/login");
     };
     return (
         <header>
